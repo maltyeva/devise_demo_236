@@ -1,8 +1,10 @@
 <%= simple_form_for(@restaurant) do |f| %>
   <%= f.error_notification %>
+  <!-- TODO: fix this mess  -->
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
   <div class="form-inputs">
     <%= f.input :name %>
+    <%= f.input :tag_list, as: :check_boxes, collection: @tags %>
   </div>
   <div class="form-actions">
     <%= f.button :submit %>

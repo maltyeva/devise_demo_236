@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :restaurants do
     collection do
       get 'dashboard', to: "restaurants#dashboard"
+      get 'tagged', to: "restaurants#tagged"
     end
   end
   resources :flats

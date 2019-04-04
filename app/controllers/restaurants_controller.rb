@@ -1,6 +1,8 @@
 class RestaurantsController < ApplicationController
   before_action :set_restaurant, only: [:show, :edit, :update, :destroy]
   after_action :verify_policy_scoped, only: [:index, :dashboard]
+  skip_after_action :verify_authorized, only: :tagged
+
   # GET /restaurants
   # GET /restaurants.json
   def index
@@ -11,16 +13,26 @@ class RestaurantsController < ApplicationController
     @restaurants = policy_scope(Restaurant)
   end
 
+  def tagged
+    # raise
+    # tag => "Pricy"
+    @tag = params[:tag]
+    @restaurants = Restaurant.tagged_with(@tag)
+  end
+
   # GET /restaurants/1
   # GET /restaurants/1.json
   def show
     authorize @restaurant
+    # @restaurant = Restaurant.find(params[:id])
+    @related = @restaurant.find_related_tags
   end
 
   # GET /restaurants/new
   def new
     @restaurant = Restaurant.new
     authorize @restaurant
+    @tags = ["Cocktail", "Evening", "Designer", "Vintages"]
   end
 
   # GET /restaurants/1/edit
@@ -78,6 +90,6 @@ class RestaurantsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def restaurant_params
-    params.require(:restaurant).permit(:name, :user_id)
+    params.require(:restaurant).permit(:name, :user_id, :tag_list)
   end
 end

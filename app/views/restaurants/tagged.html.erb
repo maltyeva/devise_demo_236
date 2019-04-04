@@ -1,0 +1,5 @@
+<% @restaurants.each do |r| %>
+  <h3><%= r.name %></h3>
+  <p><%= r.tag_list %></p>
+<% end %>
+<%= link_to "back", restaurants_path  %>

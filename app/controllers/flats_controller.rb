@@ -1,10 +1,21 @@
 class FlatsController < ApplicationController
   before_action :set_flat, only: [:show, :edit, :update, :destroy]
 
+  skip_after_action :verify_authorized, except: :index
+  skip_after_action :verify_policy_scoped, only: :index
   # GET /flats
   # GET /flats.json
   def index
-    @flats = Flat.all
+    @flats = Flat.where.not(latitude: nil, longitude: nil)
+
+    @markers = @flats.map do |flat|
+      {
+        lat: flat.latitude,
+        lng: flat.longitude,
+        infoWindow: render_to_string(partial: "infowindow", locals: { flat: flat })
+
+      }
+    end
   end
 
   # GET /flats/1

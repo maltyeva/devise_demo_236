@@ -5,8 +5,16 @@
 </p>
 <p>
   <strong>User:</strong>
-  <%= @restaurant.user %>
+  <%= @restaurant.user.email %>
 </p>
+<h4>Related Restaurants</h4>
+<ul>
+  <% @related.each do |r| %>
+    <li>
+      <%= link_to r.name, restaurant_path(r) %>
+    </li>
+  <% end %>
+</ul>
 <% if policy(@restaurant).edit? %>
   <%= link_to 'Edit', edit_restaurant_path(@restaurant) %> |
 <% end %>
